@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PythonAnalyzer", "PhytonAnalyzer\PythonAnalyzer.csproj", "{9FD752B6-F86D-4734-B27E-C4C2659EF9B4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FD752B6-F86D-4734-B27E-C4C2659EF9B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD752B6-F86D-4734-B27E-C4C2659EF9B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD752B6-F86D-4734-B27E-C4C2659EF9B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD752B6-F86D-4734-B27E-C4C2659EF9B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52A5D295-BAE5-48C6-A11A-40477F821103}
+	EndGlobalSection
+EndGlobal
