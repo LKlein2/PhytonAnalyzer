@@ -46,7 +46,7 @@ namespace PhytonAnalyzer
                     var value = code.Substring(index, matchLength);
                     if (!TokenMatch.IsIgnored)
                     {
-                        Tkns.Add(new Tkn(index, TokenMatch.Type, value, line, column));
+                        Tkns.Add(new Tkn(index, TokenMatch.Type, value, column, line));
                     }
 
                     var endOfLine = EndOfLine.Match(value);
@@ -63,7 +63,7 @@ namespace PhytonAnalyzer
                 }
                 else
                 {
-                    Tkns.Add(new Tkn(index, "ERRO", "TOKEN INVALIDO ENCONTRADO", line, column));
+                    Tkns.Add(new Tkn(index, "ERRO", "TOKEN INVALIDO ENCONTRADO", column, line));
                     break;
                 }
             }
