@@ -9,7 +9,7 @@ namespace PhytonAnalyzer
     public class Analyzer
     {
         private List<Tokens> TokenList = new List<Tokens>();
-        private Regex EndOfLine = new Regex(@"\}|\}", RegexOptions.Compiled);
+        private Regex EndOfLine = new Regex(@"\r\n", RegexOptions.Compiled);
         public List<Tkn> Tkns = new List<Tkn>();
 
         public Analyzer()

@@ -46,11 +46,6 @@ namespace PhytonAnalyzer
             tokenList.Add(new Tokens("TKN_SOMA", new Regex(@".\s\+|.\+")));
             tokenList.Add(new Tokens("TKN_DIMINUI", new Regex(@".\s-|.-")));
             tokenList.Add(new Tokens("TKN_VAR", new Regex(@"\([a-zA-Z]\)")));
-            //tokenList.Add(new Tokens("TKN_A_MULTIPLICA", new Regex(@"(\*\s.|\*.)")));
-            //tokenList.Add(new Tokens("TKN_A_DIVIDE", new Regex(@"/\s.|/.")));
-            //tokenList.Add(new Tokens("TKN_A_SOMA", new Regex(@"\+\s.|\+.")));
-            //tokenList.Add(new Tokens("TKN_A_DIMINUI", new Regex(@"\-\s.|\-.")));
-
 
             //OPERADORES LOGICOS
             tokenList.Add(new Tokens("TKN_COMP_IGUAL", new Regex(@"==")));
@@ -58,8 +53,6 @@ namespace PhytonAnalyzer
             tokenList.Add(new Tokens("TKN_COMP_MAIOR_IGUAL", new Regex(@">=")));
             tokenList.Add(new Tokens("TKN_COMP_MAIOR", new Regex(@">")));
             tokenList.Add(new Tokens("TKN_COMP_MENOR", new Regex(@"<")));
-
-
 
             //LACOES E CONDICODICOES E O PRINT
             tokenList.Add(new Tokens("TKN_IF", new Regex(@"\b(if)\s")));
@@ -71,19 +64,16 @@ namespace PhytonAnalyzer
             tokenList.Add(new Tokens("TKN_RANGE", new Regex(@"\b(range)\s")));
             tokenList.Add(new Tokens("TKN_ELSE", new Regex(@"\b(else\:)")));
 
-
             //Marcadores
             tokenList.Add(new Tokens("TKN_A_CONCHETES", new Regex(@"\[")));
             tokenList.Add(new Tokens("TKN_F_CONCHETES", new Regex(@"\]")));
             tokenList.Add(new Tokens("TKN_PONTO", new Regex(@"\.")));
             tokenList.Add(new Tokens("TKN_VIRGULA", new Regex(@"\,")));
-            //tokenList.Add(new Tokens("TKN_PONTO_VIRGULA", new Regex(@"\;")));
             tokenList.Add(new Tokens("TKN_DOIS_PONTOS", new Regex(@"\:")));
             tokenList.Add(new Tokens("TKN_A_TAB", new Regex(@"\t")));
             tokenList.Add(new Tokens("TKN_ABRE_PARENTESES", new Regex(@"\(")));
             tokenList.Add(new Tokens("TKN_FECHA_PARENTESES ", new Regex(@"\)")));
             tokenList.Add(new Tokens("TKN_ASPAS ", new Regex("(\")")));
-
 
             tokenList.Add(new Tokens("IDENTIFICADOR", new Regex(@"[A-Za-z_][a-zA-Z0-9_]+")));
 
