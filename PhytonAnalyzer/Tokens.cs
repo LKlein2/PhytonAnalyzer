@@ -26,8 +26,11 @@ namespace PhytonAnalyzer
         {
             List<Tokens> tokenList = new List<Tokens>();
 
+            tokenList.Add(new Tokens("FIM_LINHA", new Regex(@"\r\n"), true));
+            tokenList.Add(new Tokens("TKN_A_TAB", new Regex(@"\t")));
+
             //IGNORAR
-            tokenList.Add(new Tokens("ESPACO_BRANCO", new Regex(@"\s+"), true));
+            tokenList.Add(new Tokens("ESPACO_BRANCO", new Regex(@"\s"), true));
 
             //TIPOS
             tokenList.Add(new Tokens("TIPO_FLOAT", new Regex(@"\d+(\.\d{1,2})m?")));
@@ -70,7 +73,6 @@ namespace PhytonAnalyzer
             tokenList.Add(new Tokens("TKN_PONTO", new Regex(@"\.")));
             tokenList.Add(new Tokens("TKN_VIRGULA", new Regex(@"\,")));
             tokenList.Add(new Tokens("TKN_DOIS_PONTOS", new Regex(@"\:")));
-            tokenList.Add(new Tokens("TKN_A_TAB", new Regex(@"\t")));
             tokenList.Add(new Tokens("TKN_ABRE_PARENTESES", new Regex(@"\(")));
             tokenList.Add(new Tokens("TKN_FECHA_PARENTESES ", new Regex(@"\)")));
             tokenList.Add(new Tokens("TKN_ASPAS ", new Regex("(\")")));
