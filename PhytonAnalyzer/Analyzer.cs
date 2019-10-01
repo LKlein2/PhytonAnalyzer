@@ -11,6 +11,8 @@ namespace PhytonAnalyzer
         private List<Tokens> TokenList = new List<Tokens>();
         private Regex EndOfLine = new Regex(@"\r\n", RegexOptions.Compiled);
         public List<Tkn> Tkns = new List<Tkn>();
+        public int TabLine, TabCode;
+        public bool IsEndOfLine;
 
         public Analyzer()
         {
@@ -43,6 +45,33 @@ namespace PhytonAnalyzer
 
                 if (TokenMatch != null)
                 {
+                    if (TokenMatch.Type.Equals("TKN_A_TAB"))
+                    {
+                        TabLine++;
+                    }
+                    
+                    if (IsEndOfLine) {
+                        if (TabCode > TabLine)
+                        {
+                            Tkns.Add(new Tkn(index, "TKN_F_TAB", "", column, line));
+                            TabCode = TabLine;
+                        }
+                        else if (TabLine > TabCode)
+                        {
+                            TabCode = TabLine;
+                        }
+                        TabLine = 0;
+                    }
+
+                    if (TokenMatch.Type.Equals("FIM_LINHA"))
+                    {
+                        IsEndOfLine = true;
+                    }
+                    else
+                    {
+                        IsEndOfLine = false;
+                    }
+
                     var value = code.Substring(index, matchLength);
                     if (!TokenMatch.IsIgnored)
                     {
