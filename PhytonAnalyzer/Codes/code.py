@@ -11,3 +11,10 @@ for i in range (5):
 	print(a)
 
 print("final")
+
+while (true):
+	print("teste")
+	break
+
+b = 3,5
+print(b)
