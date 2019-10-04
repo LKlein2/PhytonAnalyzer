@@ -49,8 +49,9 @@ namespace PhytonAnalyzer
             tokenList.Add(new Tokens("TKN_DIVIDE", new Regex(@".\s/|./")));
             tokenList.Add(new Tokens("TKN_SOMA", new Regex(@".\s\+|.\+")));
             tokenList.Add(new Tokens("TKN_DIMINUI", new Regex(@".\s-|.-")));
-            //tokenList.Add(new Tokens("TKN_VAR", new Regex(@"(\w+)")));
 
+            tokenList.Add(new Tokens("TKN_LISTA_VAZIA", new Regex(@"\[\]")));
+            tokenList.Add(new Tokens("TKN_DEF_FUNCAO", new Regex(@"def")));
             //OPERADORES LOGICOS
             tokenList.Add(new Tokens("TKN_COMP_IGUAL", new Regex(@"==")));
             tokenList.Add(new Tokens("TKN_COMP_MENOR_IGUAL", new Regex(@"<=")));
