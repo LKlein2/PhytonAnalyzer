@@ -11,8 +11,9 @@ namespace PhytonAnalyzer
         private List<Tokens> TokenList = new List<Tokens>();
         private Regex EndOfLine = new Regex(@"\r\n", RegexOptions.Compiled);
         public List<Tkn> Tkns = new List<Tkn>();
-        public int TabLine, TabCode;
-        public bool IsEndOfLine;
+
+        bool IsEndOfLine, IsCounting;
+        int contador1, contador2;
 
         public Analyzer()
         {
@@ -30,7 +31,6 @@ namespace PhytonAnalyzer
                 Tokens TokenMatch = null;
                 int matchLength = 0;
 
-                //Procura na lista de tokens uma expressão regular que se encaixe.
                 foreach (var token in TokenList)
                 {
                     var triedMatch = token.RegularExpression.Match(code, index);
@@ -45,37 +45,50 @@ namespace PhytonAnalyzer
 
                 if (TokenMatch != null)
                 {
-                    if (TokenMatch.Type.Equals("TKN_A_TAB"))
+                    if (TokenMatch.Type.Equals("TKN_A_TAB") && (IsCounting || IsEndOfLine))
                     {
-                        TabLine++;
+                        contador1++;
+                        IsCounting = true;
                     }
-                    
-                    if (IsEndOfLine) {
-                        if (TabCode > TabLine)
+                    else if (TokenMatch.Type.Equals("TKN_A_TAB"))
+                    {
+                        Tkns.Add(new Tkn(index, "ERRO", "TOKEN INVALIDO ENCONTRADO", column, line));
+                        break;
+                    }
+                    else if (IsCounting || IsEndOfLine)
+                    {
+                        IsCounting = false;
+                        if (contador1 > contador2)
                         {
-                            Tkns.Add(new Tkn(index, "TKN_F_TAB", "", column, line));
-                            TabCode = TabLine;
+                            for (int i = 0 ; i < (contador1 - contador2) ; i++)
+                            {
+                                Tkns.Add(new Tkn(index, "TKN_IDENT", "", column, line));
+                            }
+                            contador2 = contador1;
                         }
-                        else if (TabLine > TabCode)
+                        else if (contador2 > contador1)
                         {
-                            TabCode = TabLine;
+                            for (int i = 0; i < (contador2 - contador1); i++)
+                            {
+                                Tkns.Add(new Tkn(index, "TKN_DEIDENT", "", column, line));
+                            }
+                            contador2 = contador1;
                         }
-                        TabLine = 0;
+                        contador1 = 0;
                     }
-
-                    if (TokenMatch.Type.Equals("FIM_LINHA"))
-                    {
-                        IsEndOfLine = true;
-                    }
-                    else
-                    {
-                        IsEndOfLine = false;
-                    }
+                    IsEndOfLine = (TokenMatch.Type.Equals("FIM_LINHA"));
 
                     var value = code.Substring(index, matchLength);
                     if (!TokenMatch.IsIgnored)
                     {
-                        Tkns.Add(new Tkn(index, TokenMatch.Type, value, column, line));
+                        if (TokenMatch.Type.Equals("FIM_LINHA"))
+                        {
+                            Tkns.Add(new Tkn(index, TokenMatch.Type, "{ TKN_NEWLINE }", column, line));
+                        }
+                        else
+                        {
+                            Tkns.Add(new Tkn(index, TokenMatch.Type, "{ " + value + " }", column, line));
+                        }
                     }
 
                     var endOfLine = EndOfLine.Match(value);
@@ -96,6 +109,7 @@ namespace PhytonAnalyzer
                     break;
                 }
             }
+            Tkns.Add(new Tkn(index, "TKN_EOF", "{ EOF }", column, line));
         }
     }
 }

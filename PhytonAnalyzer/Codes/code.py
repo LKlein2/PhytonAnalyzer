@@ -2,7 +2,8 @@ nseiqla = 3
 nseiqla2 = 4
 
 if (nseiqla > nseiqla2):
-	print("maior")
+	if x>y:
+		print("maior")
 else:
 	print("menor")
 
