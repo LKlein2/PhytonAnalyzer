@@ -22,6 +22,7 @@ namespace PhytonAnalyzer
 
         public void Analyze(string code)
         {
+            int tknNmb = 0;
             int index = 0;
             int column = 0;
             int line = 1;
@@ -52,7 +53,8 @@ namespace PhytonAnalyzer
                     }
                     else if (TokenMatch.Type.Equals("TKN_A_TAB"))
                     {
-                        Tkns.Add(new Tkn(index, "ERRO", "TOKEN INVALIDO ENCONTRADO", column, line));
+                        tknNmb++;
+                        Tkns.Add(new Tkn(tknNmb, "ERRO", "TOKEN INVALIDO ENCONTRADO", column, line));
                         break;
                     }
                     else if (IsCounting || IsEndOfLine)
@@ -62,7 +64,8 @@ namespace PhytonAnalyzer
                         {
                             for (int i = 0 ; i < (contador1 - contador2) ; i++)
                             {
-                                Tkns.Add(new Tkn(index, "TKN_IDENT", "", column, line));
+                                tknNmb++;
+                                Tkns.Add(new Tkn(tknNmb, "TKN_INDENT", "", column, line));
                             }
                             contador2 = contador1;
                         }
@@ -70,24 +73,26 @@ namespace PhytonAnalyzer
                         {
                             for (int i = 0; i < (contador2 - contador1); i++)
                             {
-                                Tkns.Add(new Tkn(index, "TKN_DEIDENT", "", column, line));
+                                tknNmb++;
+                                Tkns.Add(new Tkn(tknNmb, "TKN_DEDENT", "", column, line));
                             }
                             contador2 = contador1;
                         }
                         contador1 = 0;
                     }
-                    IsEndOfLine = (TokenMatch.Type.Equals("FIM_LINHA"));
+                    IsEndOfLine = (TokenMatch.Type.Equals("TKN_FIM_LINHA"));
 
                     var value = code.Substring(index, matchLength);
                     if (!TokenMatch.IsIgnored)
-                    {
-                        if (TokenMatch.Type.Equals("FIM_LINHA"))
+                    {   if (TokenMatch.Type.Equals("TKN_FIM_LINHA"))
                         {
-                            Tkns.Add(new Tkn(index, TokenMatch.Type, "{ TKN_NEWLINE }", column, line));
+                            tknNmb++;
+                            Tkns.Add(new Tkn(tknNmb, TokenMatch.Type, "{ FIM_LINHA }", column, line));
                         }
                         else
                         {
-                            Tkns.Add(new Tkn(index, TokenMatch.Type, "{ " + value + " }", column, line));
+                            tknNmb++;
+                            Tkns.Add(new Tkn(tknNmb, TokenMatch.Type, "{ " + value + " }", column, line));
                         }
                     }
 
@@ -105,11 +110,12 @@ namespace PhytonAnalyzer
                 }
                 else
                 {
-                    Tkns.Add(new Tkn(index, "ERRO", "TOKEN INVALIDO ENCONTRADO", column, line));
+                    Tkns.Add(new Tkn(tknNmb, "ERRO", "TOKEN INVALIDO ENCONTRADO", column, line));
                     break;
                 }
             }
-            Tkns.Add(new Tkn(index, "TKN_EOF", "{ EOF }", column, line));
+            tknNmb++;
+            Tkns.Add(new Tkn(tknNmb, "TKN_EOF", "{ EOF }", column, line));
         }
     }
 }

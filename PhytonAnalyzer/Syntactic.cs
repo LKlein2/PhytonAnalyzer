@@ -1,789 +1,856 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PhytonAnalyzer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using PhytonAnalyzer;
 
 namespace PythonAnalyzer
 {
     public class Syntactic
     {
-        int index;
-        String presentToken;
-        List<Tkn> tokenList;
-        Boolean elif;
+        // DEFINE TOKENS
+
+        List<Tkn> TokenList;
+
+        int TK1 = 1;   // tkn_def
+        int TK2 = 2;   // tkn_if
+        int TK3 = 3;   // tkn_a_par
+        int TK4 = 4;   // tkn_f_par
+        int TK5 = 5;   // tkn_dois_pontos
+        int TK6 = 6;   // tkn_fim_linha
+        int TK7 = 7;   // tkn_indent
+        int TK8 = 8;   // eof
+        int TK9 = 9;   // tkn_dedent
+        int TK10 = 10; // tkn_id
+        int TK11 = 11; // tkn_print
+        int TK12 = 12; // tipo_string
+        int TK13 = 13; // tkn_soma
+        int TK14 = 14; // tkn_for
+        int TK15 = 15; // tkn_in
+        int TK16 = 16; // tkn_range
+        int TK17 = 17; // tipo_int
+        int TK18 = 18; // tkn_while
+        int TK19 = 19; // tkn_else
+        int TK20 = 20; // tkn_elif
+        int TK21 = 21; // tkn_comp_igual
+        int TK22 = 22; // tkn_comp_diferente
+        int TK23 = 23; // tkn_comp_maior
+        int TK24 = 24; // tkn_comp_menor
+        int TK25 = 25; // tkn_comp_maior_igual
+        int TK26 = 26; // tkn_comp_menor_igual
+        int TK27 = 27; // tkn_dimin
+        int TK28 = 28; // tkn_mult
+        int TK29 = 29; // tkn_div
+        int TK30 = 30; // tkn_and
+        int TK31 = 31; // tkn_or
+        int TK32 = 32; // tkn_atribuicao
+        int TK33 = 33; // tipo_float
+
+        // Variáveis Globais <o>
+
+        int tk;
+        public int index = 0;
 
         public Syntactic(List<Tkn> tokenList)
         {
-            this.tokenList = tokenList;
-            this.presentToken = tokenList[0].Type;
-            this.index = 0;
-            this.elif = false;
+            this.TokenList = tokenList;
         }
 
-        public Tkn ErroToken()
+        public bool Analyze()
         {
-            index--;
-            return tokenList[index];
+            getToken();
+            return (START() == 1);
         }
 
-        public Boolean Analysis()
+        //Implemente aqui a sua função getToken()
+
+        void getToken()
         {
-            if (Start())
-                return true;
-            else
-                return false;
+            string currentToken = TokenList[index].Type.Trim();
+
+            if (currentToken.ToLower().Equals("tkn_def             ".Trim())) tk = 1;
+            if (currentToken.ToLower().Equals("tkn_id              ".Trim())) tk = 2;
+            if (currentToken.ToLower().Equals("tkn_a_par           ".Trim())) tk = 3;
+            if (currentToken.ToLower().Equals("tkn_f_par           ".Trim())) tk = 4;
+            if (currentToken.ToLower().Equals("tkn_dois_pontos     ".Trim())) tk = 5;
+            if (currentToken.ToLower().Equals("tkn_fim_linha       ".Trim())) tk = 6;
+            if (currentToken.ToLower().Equals("tkn_indent          ".Trim())) tk = 7;
+            if (currentToken.ToLower().Equals("tkn_eof             ".Trim())) tk = 8;
+            if (currentToken.ToLower().Equals("tkn_dedent          ".Trim())) tk = 9;
+            if (currentToken.ToLower().Equals("tkn_print           ".Trim())) tk = 10;
+            if (currentToken.ToLower().Equals("tipo_string         ".Trim())) tk = 11;
+            if (currentToken.ToLower().Equals("tkn_soma            ".Trim())) tk = 12;
+            if (currentToken.ToLower().Equals("tkn_for             ".Trim())) tk = 13;
+            if (currentToken.ToLower().Equals("tkn_in              ".Trim())) tk = 14;
+            if (currentToken.ToLower().Equals("tkn_range           ".Trim())) tk = 15;
+            if (currentToken.ToLower().Equals("tipo_int            ".Trim())) tk = 16;
+            if (currentToken.ToLower().Equals("tkn_while           ".Trim())) tk = 17;
+            if (currentToken.ToLower().Equals("tkn_if              ".Trim())) tk = 18;
+            if (currentToken.ToLower().Equals("tkn_else            ".Trim())) tk = 19;
+            if (currentToken.ToLower().Equals("tkn_elif            ".Trim())) tk = 20;
+            if (currentToken.ToLower().Equals("tkn_comp_igual      ".Trim())) tk = 21;
+            if (currentToken.ToLower().Equals("tkn_comp_diferente  ".Trim())) tk = 22;
+            if (currentToken.ToLower().Equals("tkn_comp_maior      ".Trim())) tk = 23;
+            if (currentToken.ToLower().Equals("tkn_comp_menor      ".Trim())) tk = 24;
+            if (currentToken.ToLower().Equals("tkn_comp_maior_igual".Trim())) tk = 25;
+            if (currentToken.ToLower().Equals("tkn_comp_menor_igual".Trim())) tk = 26;
+            if (currentToken.ToLower().Equals("tkn_dimin           ".Trim())) tk = 27;
+            if (currentToken.ToLower().Equals("tkn_mult            ".Trim())) tk = 28;
+            if (currentToken.ToLower().Equals("tkn_div             ".Trim())) tk = 29;
+            if (currentToken.ToLower().Equals("tkn_and             ".Trim())) tk = 30;
+            if (currentToken.ToLower().Equals("tkn_or              ".Trim())) tk = 31;
+            if (currentToken.ToLower().Equals("tkn_atribuicao      ".Trim())) tk = 32;
+            if (currentToken.ToLower().Equals("tipo_float          ".Trim())) tk = 33;
+
+            index++;
         }
 
-        private void nextToken()
+        //START -> tkn_def tkn_id tkn_a_par tkn_f_par tkn_dois_pontos tkn_fim_linha tkn_indent P END | P eof 
+        int START()
         {
-            this.index++;
-            if (index < tokenList.Count)
-                this.presentToken = tokenList[index].Type;
-            else
-                this.presentToken = null;
-        }
-
-        private void backToken()
-        {
-            this.index--;
-            this.presentToken = tokenList[index].Type;
-        }
-
-        // Start -> DEF ID (PARAM_LIST) : INDENT PROGRAM EOF 
-        private Boolean Start()
-        {
-            //if (presentToken == "TKN_DEF_FUNCAO")
-            //{
-            //    nextToken();
-                if (presentToken == "TKN_ID")
-                {
-                    nextToken();
-                    if (Param_List())
-                    {
-                        nextToken();
-                        if (presentToken == "TKN_DOIS_PONTOS")
-                        {
-                            nextToken();
-                            if (presentToken == "TKN_IDENT")
-                            {
-                                nextToken();
-                                if (Program())
-                                {
-                                    nextToken();
-                                    if (presentToken == "TKN_EOF")
-                                        return true;
-                                    else if (presentToken == "TKN_DEIDENT")
-                                    {
-                                        nextToken();
-                                        if (Start())
-                                            return true;
-                                        else
+            if (tk == TK1)
+            {// tkn_def
+                getToken();
+                if (tk == TK2)
+                {// tkn_id
+                    getToken();
+                    if (tk == TK3)
+                    {// tkn_a_par
+                        getToken();
+                        if (tk == TK4)
+                        {// tkn_f_par
+                            getToken();
+                            if (tk == TK5)
+                            {// tkn_dois_pontos
+                                getToken();
+                                if (tk == TK6)
+                                {// tkn_fim_linha
+                                    getToken();
+                                    if (tk == TK7)
+                                    {// tkn_indent
+                                        getToken();
+                                        if (P() == 1)
                                         {
-                                            return false;
-                                        }
-                                    }
-                                    else return false;
-                                }
-                                else return false;
-                            }
-                            else return false;
-                        }
-                        else return false;
-                    }
-                    else return false;
-                }
-                else return false;
-            //}
-            //else return false;
-        }
-
-        // Param_List -> (Parameters)
-        private Boolean Param_List()
-        {
-            if (presentToken == "TKN_A_PAR")
-            {
-                nextToken();
-                if (Parameters())
-                {
-                    nextToken();
-                    if (presentToken == "TKN_F_PAR")
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            else
-                return false;
-        }
-
-        // Parameters -> TYPE ID ADD_PARAMETERS | EMPTY
-        private Boolean Parameters()
-        {
-            if (Type())
-            {
-                nextToken();
-                if (presentToken == "TKN_ID")
-                {
-                    nextToken();
-                    if (Add_Parameters())
-                    {
-                        return true;
-                    }
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            else
-            {
-                backToken();
-                return true;
-            }
-        }
-
-        // Add_Parameters -> ,ADD_PARAMETERS | EMPTY
-        private Boolean Add_Parameters()
-        {
-            if (presentToken == "TKN_VIRGULA")
-            {
-                nextToken();
-                if (Parameters())
-                    return true;
-                else
-                    return false;
-            }
-            else
-            {
-                backToken();
-                return true;
-            }
-        }
-
-
-        // Program P -> ATTRIBUTION P | AUTO_OPERATION P | IF P | WHILE P | FOR P | PRINT P | FUNCTION P | EMPTY
-        private Boolean Program()
-        {
-
-            if (Auto_Operation())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else if (Function())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else if (Attribution())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else if (If_Statment())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else if (While())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else if (For())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else if (Print())
-            {
-                nextToken();
-                if (Program())
-                    return true;
-                else
-                    return false;
-            }
-            else
-            {
-                backToken();
-                return true;
-            }
-        }
-        // FUNCTION -> ID (ID_LIST)
-        // ID_LIST -> ID ADD_ID | EMPTY
-        // ADD_ID -> ,ID ADD_ID | EMPTY
-        private Boolean Function()
-        {
-            if (presentToken == "TKN_ID")
-            {
-                nextToken();
-                if (presentToken == "TKN_A_PAR")
-                {
-                    nextToken();
-                    if (ID_List())
-                    {
-                        nextToken();
-                        if (presentToken == "TKN_F_PAR")
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else return false;
-                }
-                else
-                {
-                    backToken();
-                    return false;
-                }
-            }
-            else return false;
-        }
-
-        private Boolean ID_List()
-        {
-            if (presentToken == "TKN_ID")
-            {
-                nextToken();
-                if (Add_ID())
-                    return true;
-                else
-                    return false;
-            }
-            else
-            {
-                backToken();
-                return true;
-            }
-        }
-
-        private Boolean Add_ID()
-        {
-            if (presentToken == "TKN_VIRGULA")
-            {
-                nextToken();
-                if (presentToken == "TKN_ID")
-                {
-                    nextToken();
-                    if (Add_ID())
-                    {
-                        return true;
-                    }
-                    else return false;
-                }
-                else return false;
-            }
-            else
-            {
-                backToken();
-                return true;
-            }
-        }
-
-        // AUTO_OPERATION -> ++ID | --ID | ID AUTO_OPERATION'
-        // AUTO_OPERATION' -> ++ | --
-        private Boolean Auto_Operation()
-        {
-            if (presentToken == "TKN_SOMA")
-            {
-                nextToken();
-                if (presentToken == "TKN_SOMA")
-                {
-                    nextToken();
-                    if (presentToken == "TKN_ID")
-                        return true;
-                    else
-                        return false;
-                }
-                else return false;
-            }
-            else if (presentToken == "TKN_SUBTR")
-            {
-                nextToken();
-                if (presentToken == "TKN_SUBTR")
-                {
-                    nextToken();
-                    if (presentToken == "TKN_ID")
-                        return true;
-                    else
-                        return false;
-                }
-                else return false;
-            }
-            else if (presentToken == "TKN_ID")
-            {
-                nextToken();
-                if (presentToken == "TKN_SOMA")
-                {
-                    nextToken();
-                    if (presentToken == "TKN_SOMA")
-                        return true;
-                    else
-                    {
-                        backToken();
-                        backToken();
-                        return false;
-                    }
-
-                }
-                else if (presentToken == "TKN_SUBTR")
-                {
-                    nextToken();
-                    if (presentToken == "TKN_SUBTR")
-                        return true;
-                    else
-                    {
-                        backToken();
-                        backToken();
-                        return false;
-                    }
-                }
-                else
-                {
-                    backToken();
-                    return false;
-                }
-            }
-            else return false;
-        }
-
-        // PRINT -> PRINT (PRINT') | PRINT PRINT' | PRINT PRINT'
-        // PRINT' -> PRINT_LIST | STRING | ID
-        // PRINT_LIST -> STRING ADD_PRINT | ID ADD_PRINT
-        // ADD_PRINT -> + STRING ADD_PRINT | + ID ADD_PRINT | EMPTY
-        private Boolean Print()
-        {
-            if (presentToken == "TKN_PRINT")
-            {
-                nextToken();
-                if (presentToken == "TKN_A_PAR")
-                {
-                    nextToken();
-                    if (Print_List())
-                    {
-                        nextToken();
-                        if (presentToken == "TKN_F_PAR")
-                            return true;
-                        else
-                            return false;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (presentToken == "TIPO_STRING")
-                {
-                    return true;
-                }
-                else if (presentToken == "TKN_ID")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else return false;
-        }
-
-        private Boolean Print_List()
-        {
-            if (presentToken == "TIPO_STRING" || presentToken == "TKN_ID")
-            {
-                nextToken();
-                if (Add_Print())
-                    return true;
-                else
-                    return false;
-            }
-            else return false;
-        }
-
-        private Boolean Add_Print()
-        {
-            if (presentToken == "TKN_SOMA")
-            {
-                nextToken();
-                if (presentToken == "TKN_ID" || presentToken == "TIPO_STRING")
-                {
-                    nextToken();
-                    if (Add_Print())
-                        return true;
-                    else
-                        return false;
-                }
-                else return false;
-            }
-            else
-            {
-                backToken();
-                return true;
-            }
-        }
-
-        // FOR -> ID IN ID (INTEGER) INDENT PROGRAM DEDENT
-        private Boolean For()
-        {
-            if (presentToken == "TKN_FOR")
-            {
-                nextToken();
-                if (presentToken == "TKN_ID")
-                {
-                    nextToken();
-                    if (presentToken == "TKN_IN")
-                    {
-                        nextToken();
-                        if (presentToken == "TKN_ID")
-                        {
-                            nextToken();
-                            if (presentToken == "TKN_A_PAR")
-                            {
-                                nextToken();
-                                if (presentToken == "TIPO_INT")
-                                {
-                                    nextToken();
-                                    if (presentToken == "TKN_F_PAR")
-                                    {
-                                        nextToken();
-                                        if (presentToken == "TKN_IDENT")
-                                        {
-                                            nextToken();
-                                            if (Program())
+                                            if (END() == 1)
                                             {
-                                                nextToken();
-                                                if (presentToken == "TKN_DEIDENT")
-                                                {
-                                                    return true;
-                                                }
-                                                else
-                                                {
-                                                    return false;
-                                                }
+                                                return 1;
                                             }
-                                            else return false;
+                                            else { return 0; }
                                         }
-                                        else return false;
+                                        else { return 0; }
                                     }
-                                    else return false;
+                                    else { return 0; }
                                 }
-                                else return false;
+                                else { return 0; }
                             }
-                            else return false;
+                            else { return 0; }
                         }
-                        else return false;
+                        else { return 0; }
                     }
-                    else return false;
+                    else { return 0; }
                 }
-                else return false;
+                else { return 0; }
             }
-            else return false;
+            else if (P() == 1)
+            {
+                if (tk == TK8)
+                {// eof
+                    //getToken();
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else { return 0; }
         }
 
-        // WHILE -> WHILE (CONDITION_LIST) INDENT PROGRAM DEDENT 
-        private Boolean While()
+        //END -> tkn_dedent | eof 
+        int END()
         {
-            if (presentToken == "TKN_WHILE")
+            if (tk == TK9)
+            {// tkn_dedent
+                getToken();
+                return 1;
+            }
+            else if (tk == TK8)
+            {// eof
+                getToken();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        //P -> ATTRIBUTION P | IF_STATMENT P | WHILE P | FOR P | PRINT P | FUNCTION P | EMPTY_LINE P | ? 
+        int P()
+        {
+            if (ATTRIBUTION() == 1)
             {
-                nextToken();
-                if (presentToken == "TKN_A_PAR")
+                if (P() == 1)
                 {
-                    nextToken();
-                    if (Condition_List())
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (IF_STATMENT() == 1)
+            {
+                if (P() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (WHILE() == 1)
+            {
+                if (P() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (FOR() == 1)
+            {
+                if (P() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (PRINT() == 1)
+            {
+                if (P() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (FUNCTION() == 1)
+            {
+                if (P() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (EMPTY_LINE() == 1)
+            {
+                if (P() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else { return 1; }
+        }
+
+        //EMPTY_LINE -> tkn_fim_linha 
+        int EMPTY_LINE()
+        {
+            if (tk == TK6)
+            {// tkn_fim_linha
+                getToken();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        //FUNCTION -> tkn_id tkn_a_par tkn_f_par tkn_fim_linha 
+        int FUNCTION()
+        {
+            if (tk == TK2)
+            {// tkn_id
+                getToken();
+                if (tk == TK3)
+                {// tkn_a_par
+                    getToken();
+                    if (tk == TK4)
+                    {// tkn_f_par
+                        getToken();
+                        if (tk == TK6)
+                        {// tkn_fim_linha
+                            getToken();
+                            return 1;
+                        }
+                        else { return 0; }
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 0; }
+        }
+
+        //PRINT -> tkn_print tkn_a_par RPRINT tkn_f_par tkn_fim_linha 
+        int PRINT()
+        {
+            if (tk == TK10)
+            {// tkn_print
+                getToken();
+                if (tk == TK3)
+                {// tkn_a_par
+                    getToken();
+                    if (RPRINT() == 1)
                     {
-                        nextToken();
-                        if (presentToken == "TKN_F_PAR")
-                        {
-                            nextToken();
-                            if (presentToken == "TKN_IDENT")
-                            {
-                                nextToken();
-                                if (Program())
+                        if (tk == TK4)
+                        {// tkn_f_par
+                            getToken();
+                            if (tk == TK6)
+                            {// tkn_fim_linha
+                                getToken();
+                                return 1;
+                            }
+                            else { return 0; }
+                        }
+                        else { return 0; }
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 0; }
+        }
+
+        //RPRINT -> PRINT_LIST | tipo_string | tkn_id 
+        int RPRINT()
+        {
+            if (PRINT_LIST() == 1)
+            {
+                return 1;
+            }
+            else if (tk == TK11)
+            {// tipo_string
+                getToken();
+                return 1;
+            }
+            else if (tk == TK2)
+            {// tkn_id
+                getToken();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        //PRINT_LIST -> tipo_string ADD_PRINT | tkn_id ADD_PRINT 
+        int PRINT_LIST()
+        {
+            if (tk == TK11)
+            {// tipo_string
+                getToken();
+                if (ADD_PRINT() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (tk == TK2)
+            {// tkn_id
+                getToken();
+                if (ADD_PRINT() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else { return 0; }
+        }
+
+        //ADD_PRINT -> tkn_soma tipo_string ADD_PRINT | tkn_soma tkn_id ADD_PRINT | ? 
+        int ADD_PRINT()
+        {
+            if (tk == TK12)
+            {// tkn_soma
+                getToken();
+                if (tk == TK11)
+                {// tipo_string
+                    getToken();
+                    if (ADD_PRINT() == 1)
+                    {
+                        return 1;
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else if (tk == TK12)
+            {// tkn_soma
+                getToken();
+                if (tk == TK2)
+                {// tkn_id
+                    getToken();
+                    if (ADD_PRINT() == 1)
+                    {
+                        return 1;
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 1; }
+        }
+
+        //FOR -> tkn_for tkn_id tkn_in tkn_range tkn_a_par COMP_FOR tkn_f_par tkn_dois_pontos tkn_fim_linha tkn_indent P tkn_dedent 
+        int FOR()
+        {
+            if (tk == TK13)
+            {// tkn_for
+                getToken();
+                if (tk == TK2)
+                {// tkn_id
+                    getToken();
+                    if (tk == TK14)
+                    {// tkn_in
+                        getToken();
+                        if (tk == TK15)
+                        {// tkn_range
+                            getToken();
+                            if (tk == TK3)
+                            {// tkn_a_par
+                                getToken();
+                                if (COMP_FOR() == 1)
                                 {
-                                    nextToken();
-                                    if (presentToken == "TKN_DEIDENT")
-                                    {
-                                        return true;
+                                    if (tk == TK4)
+                                    {// tkn_f_par
+                                        getToken();
+                                        if (tk == TK5)
+                                        {// tkn_dois_pontos
+                                            getToken();
+                                            if (tk == TK6)
+                                            {// tkn_fim_linha
+                                                getToken();
+                                                if (tk == TK7)
+                                                {// tkn_indent
+                                                    getToken();
+                                                    if (P() == 1)
+                                                    {
+                                                        if (tk == TK9)
+                                                        {// tkn_dedent
+                                                            getToken();
+                                                            return 1;
+                                                        }
+                                                        else { return 0; }
+                                                    }
+                                                    else { return 0; }
+                                                }
+                                                else { return 0; }
+                                            }
+                                            else { return 0; }
+                                        }
+                                        else { return 0; }
                                     }
-                                    else
-                                    {
-                                        return false;
-                                    }
+                                    else { return 0; }
                                 }
-                                else return false;
+                                else { return 0; }
                             }
-                            else return false;
+                            else { return 0; }
                         }
-                        else return false;
+                        else { return 0; }
                     }
-                    else return false;
+                    else { return 0; }
                 }
-                else return false;
+                else { return 0; }
             }
-            else return false;
+            else { return 0; }
         }
 
-        // IF_STATEMENT -> IF (CONDITION_LIT) INDENT PROGRAM DEDENT ELSE_ELIF
-        // ELSE_ELIF -> ELSE INDENT PROGRAM DEDENT | ELIF IF_STATMENT | EMPTY
-        private Boolean If_Statment()
+        //COMP_FOR -> tkn_id | tipo_int 
+        int COMP_FOR()
         {
-            if (presentToken == "TKN_IF" || elif)
-            {
-                elif = false;
-                nextToken();
-                if (presentToken == "TKN_A_PAR")
-                {
-                    nextToken();
-                    if (Condition_List())
+            if (tk == TK2)
+            {// tkn_id
+                getToken();
+                return 1;
+            }
+            else if (tk == TK16)
+            {// tipo_int
+                getToken();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        //WHILE -> tkn_while tkn_a_par COMP_WHILE tkn_f_par tkn_dois_pontos tkn_fim_linha tkn_indent P tkn_dedent 
+        int WHILE()
+        {
+            if (tk == TK17)
+            {// tkn_while
+                getToken();
+                if (tk == TK3)
+                {// tkn_a_par
+                    getToken();
+                    if (COMP_WHILE() == 1)
                     {
-                        nextToken();
-                        if (presentToken == "TKN_F_PAR")
-                        {
-                            nextToken();
-                            if (presentToken == "TKN_IDENT")
+                        if (tk == TK4)
+                        {// tkn_f_par
+                            getToken();
+                            if (tk == TK5)
+                            {// tkn_dois_pontos
+                                getToken();
+                                if (tk == TK6)
+                                {// tkn_fim_linha
+                                    getToken();
+                                    if (tk == TK7)
+                                    {// tkn_indent
+                                        getToken();
+                                        if (P() == 1)
+                                        {
+                                            if (tk == TK9)
+                                            {// tkn_dedent
+                                                getToken();
+                                                return 1;
+                                            }
+                                            else { return 0; }
+                                        }
+                                        else { return 0; }
+                                    }
+                                    else { return 0; }
+                                }
+                                else { return 0; }
+                            }
+                            else { return 0; }
+                        }
+                        else { return 0; }
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 0; }
+        }
+
+        //COMP_WHILE -> EXP_C | tkn_id 
+        int COMP_WHILE()
+        {
+            int tkret = tk;
+            int indexret = index;
+            if (EXP_C() == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                tk = tkret;
+                index = indexret;
+                if (tk == TK2)
+                {// tkn_id
+                    getToken();
+                    return 1;
+                }
+                else { return 0; }
+            }
+        }
+
+        //IF_STATMENT -> tkn_if tkn_a_par EXP_C tkn_f_par tkn_dois_pontos tkn_fim_linha tkn_indent P tkn_dedent ELSE_ELIF 
+        int IF_STATMENT()
+        {
+            if (tk == TK18)
+            {// tkn_if
+                getToken();
+                if (tk == TK3)
+                {// tkn_a_par
+                    getToken();
+                    if (EXP_C() == 1)
+                    {
+                        if (tk == TK4)
+                        {// tkn_f_par
+                            getToken();
+                            if (tk == TK5)
+                            {// tkn_dois_pontos
+                                getToken();
+                                if (tk == TK6)
+                                {// tkn_fim_linha
+                                    getToken();
+                                    if (tk == TK7)
+                                    {// tkn_indent
+                                        getToken();
+                                        if (P() == 1)
+                                        {
+                                            if (tk == TK9)
+                                            {// tkn_dedent
+                                                getToken();
+                                                if (ELSE_ELIF() == 1)
+                                                {
+                                                    return 1;
+                                                }
+                                                else { return 0; }
+                                            }
+                                            else { return 0; }
+                                        }
+                                        else { return 0; }
+                                    }
+                                    else { return 0; }
+                                }
+                                else { return 0; }
+                            }
+                            else { return 0; }
+                        }
+                        else { return 0; }
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 0; }
+        }
+
+        //ELSE_ELIF -> tkn_else tkn_dois_pontos tkn_fim_linha tkn_indent P tkn_dedent | tkn_elif tkn_dois_pontos IF_STATMENT | ? 
+        int ELSE_ELIF()
+        {
+            if (tk == TK19)
+            {// tkn_else
+                getToken();
+                if (tk == TK5)
+                {// tkn_dois_pontos
+                    getToken();
+                    if (tk == TK6)
+                    {// tkn_fim_linha
+                        getToken();
+                        if (tk == TK7)
+                        {// tkn_indent
+                            getToken();
+                            if (P() == 1)
                             {
-                                nextToken();
-                                if (Program())
-                                {
-                                    nextToken();
-                                    if (presentToken == "TKN_DEIDENT")
-                                    {
-                                        nextToken();
-                                        if (else_elif())
-                                            return true;
-                                        else
-                                            return false;
-                                    }
-                                    else if (presentToken == "TKN_EOF")
-                                    {
-                                        backToken();
-                                        return true;
-                                    }
-                                    else if (presentToken == "TKN_ELSE")
-                                        if (else_elif())
-                                            return true;
-                                        else
-                                            return false;
-                                    else
-                                        return false;
+                                if (tk == TK9)
+                                {// tkn_dedent
+                                    getToken();
+                                    return 1;
                                 }
-                                else return false;
+                                else { return 0; }
                             }
-                            else return false;
+                            else { return 0; }
                         }
-                        else return false;
+                        else { return 0; }
                     }
-                    else return false;
+                    else { return 0; }
                 }
-                else return false;
+                else { return 0; }
             }
-            else return false;
+            else if (tk == TK20)
+            {// tkn_elif
+                getToken();
+                if (tk == TK5)
+                {// tkn_dois_pontos
+                    getToken();
+                    if (IF_STATMENT() == 1)
+                    {
+                        return 1;
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 1; }
         }
 
-        private Boolean else_elif()
+        //EXP_C -> EXP COMP EXP 
+        int EXP_C()
         {
-            if (presentToken == "TKN_ELSE")
+            if (EXP() == 1)
             {
-                nextToken();
-                if (presentToken == "TKN_IDENT")
+                if (COMP() == 1)
                 {
-                    nextToken();
-                    if (Program())
+                    if (EXP() == 1)
                     {
-                        nextToken();
-                        if (presentToken == "TKN_DEIDENT")
-                            return true;
-                        else if (presentToken == "TKN_EOF")
+                        return 1;
+                    }
+                    else { return 0; }
+                }
+                else { return 0; }
+            }
+            else { return 0; }
+        }
+
+        //COMP -> tkn_comp_igual | tkn_comp_diferente | tkn_comp_maior | tkn_comp_menor | tkn_comp_maior_igual | tkn_comp_menor_igual 
+        int COMP()
+        {
+            if (tk == TK21)
+            {// tkn_comp_igual
+                getToken();
+                return 1;
+            }
+            else if (tk == TK22)
+            {// tkn_comp_diferente
+                getToken();
+                return 1;
+            }
+            else if (tk == TK23)
+            {// tkn_comp_maior
+                getToken();
+                return 1;
+            }
+            else if (tk == TK24)
+            {// tkn_comp_menor
+                getToken();
+                return 1;
+            }
+            else if (tk == TK25)
+            {// tkn_comp_maior_igual
+                getToken();
+                return 1;
+            }
+            else if (tk == TK26)
+            {// tkn_comp_menor_igual
+                getToken();
+                return 1;
+            }
+            else { return 0; }
+        }
+
+        //EXP -> tkn_id EXP1Hash | tkn_a_par EXP tkn_f_par EXP1Hash | TYPE EXP1Hash 
+        int EXP()
+        {
+            if (tk == TK2)
+            {// tkn_id
+                getToken();
+                if (EXP1Hash() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (tk == TK3)
+            {// tkn_a_par
+                getToken();
+                if (EXP() == 1)
+                {
+                    if (tk == TK4)
+                    {// tkn_f_par
+                        getToken();
+                        if (EXP1Hash() == 1)
                         {
-                            backToken();
-                            return true;
+                            return 1;
                         }
-                        else
-                            return false;
+                        else { return 0; }
                     }
-                    else return false;
+                    else { return 0; }
                 }
-                else return false;
+                else { return 0; }
             }
-            else if (presentToken == "TKN_ELIF")
+            else if (TYPE() == 1)
             {
-                elif = true;
-                if (If_Statment())
-                    return true;
-                else
-                    return false;
+                if (EXP1Hash() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
             }
-            else
-            {
-                backToken();
-                return true;
-            }
+            else { return 0; }
         }
 
-        // Condition_List -> EXP ADD_CONDITION 
-        // Add_Condition -> && EXP | || EXP | EMPTY 
-        // Exp_Conditional E -> EXP == EXP | EXP != EXP | EXP > EXP | EXP < EXP | EXP >= EXP | EXP <= EXP 
-
-        private Boolean Condition_List()
+        //EXP1Hash -> REXP EXP1Hash | ? 
+        int EXP1Hash()
         {
-            if (Exp_Conditional())
+            if (REXP() == 1)
             {
-                nextToken();
-                if (Add_Condition())
+                if (EXP1Hash() == 1)
                 {
-                    return true;
+                    return 1;
                 }
-                else
-                {
-                    return false;
-                }
+                else { return 0; }
             }
-            else
-            {
-                return false;
-            }
+            else { return 1; }
         }
 
-        private Boolean Add_Condition()
+        //REXP -> tkn_soma EXP | tkn_dimin EXP | tkn_mult EXP | tkn_div EXP | tkn_and EXP | tkn_or EXP 
+        int REXP()
         {
-            if (presentToken == "TK.VERTBAR" || presentToken == "TK.AMPER")
-            {
-                nextToken();
-                if (Exp_Conditional())
-                    return true;
-                else
-                    return false;
+            if (tk == TK12)
+            {// tkn_soma
+                getToken();
+                if (EXP() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
             }
-            else
-            {
-                backToken();
-                return true;
+            else if (tk == TK27)
+            {// tkn_dimin
+                getToken();
+                if (EXP() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
             }
+            else if (tk == TK28)
+            {// tkn_mult
+                getToken();
+                if (EXP() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (tk == TK29)
+            {// tkn_div
+                getToken();
+                if (EXP() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (tk == TK30)
+            {// tkn_and
+                getToken();
+                if (EXP() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else if (tk == TK31)
+            {// tkn_or
+                getToken();
+                if (EXP() == 1)
+                {
+                    return 1;
+                }
+                else { return 0; }
+            }
+            else { return 0; }
         }
 
-        private Boolean Exp_Conditional()
+        //ATTRIBUTION -> tkn_id tkn_atribuicao EXP tkn_fim_linha 
+        int ATTRIBUTION()
         {
-            if (Expression())
-            {
-                nextToken();
-                if (presentToken == "TKN_ATRIBUICAOEQUAL" || presentToken == "TK.NOTEQUAL" || presentToken == "TK.LESS" ||
-                        presentToken == "TK.GREATER" || presentToken == "TK.LESSEQUAL" || presentToken == "TK.GREATEREQUAL")
-                {
-                    nextToken();
-                    if (Expression())
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        // Attribution ->    ID = FUNCTION | ID = EXP | ID += EXP | ID -= EXP | ID *= EXP | ID /= EXP 
-        private Boolean Attribution()
-        {
-            if (presentToken == "TKN_ID")
-            {
-                nextToken();
-                if (presentToken == "TKN_ATRIBUICAO")
-                {
-                    nextToken();
-                    if (Function())
-                        return true;
-                    else if (Expression())
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            else
-                return false;
-        }
-
-        // Exp_Attrib E -> E + E | E-E | E * E | E / E | E ^ E | E and E | E or E | id | ( E ) | TYPE
-        // Fatorando
-        // Exp_Attrib E -> E E' | id | ( E ) | TYPE em que E' = Exp_Attrib_1
-        // Exp_Attrib_1 E' -> + E | - E | * E | / E | ^ E | and E | or E 
-        public Boolean Expression()
-        {
-            if (presentToken == "TKN_ID" || Type())
-            {
-                nextToken();
-                if (presentToken == "TKN_AND" || presentToken == "TKN_OR" || presentToken == "TKN_MULT" ||
-                    presentToken == "TKN_DIV" || presentToken == "TKN_SOMA"
-                    || presentToken == "TKN_SUBTR")
-                {
-                    nextToken();
-                    if (Expression())
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
-                    backToken();
-                    return true;
-                }
-
-            }
-            else if (presentToken == "TKN_A_PAR")
-            {
-                nextToken();
-                if (Expression())
-                {
-                    nextToken();
-                    if (presentToken == "TKN_F_PAR")
+            if (tk == TK2)
+            {// tkn_id
+                getToken();
+                if (tk == TK32)
+                {// tkn_atribuicao
+                    getToken();
+                    if (EXP() == 1)
                     {
-                        return true;
+                        if (tk == TK6)
+                        {// tkn_fim_linha
+                            getToken();
+                            return 1;
+                        }
+                        else { return 0; }
                     }
-                    else return false;
+                    else { return 0; }
                 }
-                else return false;
+                else { return 0; }
             }
-            else return false;
+            else { return 0; }
         }
 
-        private Boolean Type()
+        //TYPE -> tipo_string | tipo_int | tipo_float 
+        int TYPE()
         {
-            if (presentToken == "TIPO_FLOAT" || presentToken == "TIPO_INT" || presentToken == "TIPO_STRING")
-                return true;
-            else
-                return false;
+            if (tk == TK11)
+            {// tipo_string
+                getToken();
+                return 1;
+            }
+            else if (tk == TK16)
+            {// tipo_int
+                getToken();
+                return 1;
+            }
+            else if (tk == TK33)
+            {// tipo_float
+                getToken();
+                return 1;
+            }
+            else { return 0; }
         }
     }
 }

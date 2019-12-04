@@ -40,17 +40,11 @@ namespace PhytonAnalyzer
 
             //OPERADORES ARITMETICOS
             tokenList.Add(new Tokens("TKN_SOMA", new Regex(@"[+]")));
-            tokenList.Add(new Tokens("TKN_SUBTR", new Regex(@"[-]")));
+            tokenList.Add(new Tokens("TKN_DIMIN", new Regex(@"[-]")));
             tokenList.Add(new Tokens("TKN_MULT", new Regex(@"[*]")));
             tokenList.Add(new Tokens("TKN_DIV", new Regex(@"[/]")));
             tokenList.Add(new Tokens("TKN_ATRIBUICAO", new Regex(@"[=]")));
-            tokenList.Add(new Tokens("TKN_ATRIBUI", new Regex(@".\s=|.=")));
-            tokenList.Add(new Tokens("TKN_MULTIPLICA", new Regex(@".\s\*\s.|.\*.")));
-            tokenList.Add(new Tokens("TKN_DIVIDE", new Regex(@".\s/|./")));
-            tokenList.Add(new Tokens("TKN_SOMA", new Regex(@".\s\+|.\+")));
-            tokenList.Add(new Tokens("TKN_DIMINUI", new Regex(@".\s-|.-")));
-            tokenList.Add(new Tokens("TKN_LISTA_VAZIA", new Regex(@"\[\]")));
-            tokenList.Add(new Tokens("TKN_DEF_FUNCAO", new Regex(@"def")));
+            tokenList.Add(new Tokens("TKN_DEF", new Regex(@"def")));
 
             //OPERADORES LOGICOS
             tokenList.Add(new Tokens("TKN_COMP_IGUAL", new Regex(@"==")));
@@ -66,7 +60,7 @@ namespace PhytonAnalyzer
             //LACOES E CONDICODICOES E O PRINT
             tokenList.Add(new Tokens("TKN_IF", new Regex(@"\b(if)\s")));
             tokenList.Add(new Tokens("TKN_PRINT", new Regex(@"\b(print)")));
-            tokenList.Add(new Tokens("TKN_FOR", new Regex(@"\b(for .)\s")));
+            tokenList.Add(new Tokens("TKN_FOR", new Regex(@"\b(for)\s")));
             tokenList.Add(new Tokens("TKN_WHILE", new Regex(@"\b(while)\s")));
             tokenList.Add(new Tokens("TKN_DO", new Regex(@"\b(do)\s")));
             tokenList.Add(new Tokens("TKN_IN", new Regex(@"\b(in)\s")));
